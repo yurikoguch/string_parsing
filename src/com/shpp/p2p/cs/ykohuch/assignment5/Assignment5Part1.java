@@ -1,6 +1,4 @@
 package com.shpp.p2p.cs.ykohuch.assignment5;
-
-
 import com.shpp.cs.a.console.TextProgram;
 
 public class Assignment5Part1 extends TextProgram {
@@ -10,7 +8,12 @@ public class Assignment5Part1 extends TextProgram {
 		 */
         while (true) {
             String word = readLine("Enter a single word: ").toLowerCase();
-            println("  Syllable count: " + syllablesIn(word));
+            //check for letters
+            if(word.matches("(?i).*[a-z].*")) {
+                println("  Syllable count: " + syllablesIn(word));
+            }else {
+               println("enter a word");
+            }
         }
     }
 
@@ -24,7 +27,6 @@ public class Assignment5Part1 extends TextProgram {
     private int syllablesIn(String word) {
         //array of vowel letters
         char[] vowels = { 'a', 'e', 'i', 'o', 'u', 'y' };
-
         //convert word from string to char array
         char[] entryWord = word.toCharArray();
         //vowels counter
@@ -57,12 +59,13 @@ public class Assignment5Part1 extends TextProgram {
                 lastWasVowel = false;
         }
        /* reject the letter e if the word contains more than two letters and ends with e*/
-        if (word.length() > 2 &&
-                word.endsWith("e"))
+       /* considered the case with the word "manatee"*/
+        if (word.length() > 2 && word.endsWith("e") &&  word.charAt(word.length() - 2) != 'e')
             vowelsCounter--;
         /*if a word has no vowels, and word length is bigger than 0 program will return 1*/
         if(vowelsCounter == 0 && word.length()>0)
-            return 1;
+            return vowelsCounter + 1;
+
         return vowelsCounter;
     }
 }

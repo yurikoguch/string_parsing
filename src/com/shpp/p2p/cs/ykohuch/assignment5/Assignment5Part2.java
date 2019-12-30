@@ -1,18 +1,20 @@
 package com.shpp.p2p.cs.ykohuch.assignment5;
-
 import com.shpp.cs.a.console.TextProgram;
 
-
+//this program does a mathematical function of adding in to a column
 public class Assignment5Part2 extends TextProgram {
-
-
     public void run() {
 		/* Sit in a loop, reading numbers and adding them. */
         while (true) {
-            String n1 = readLine("Enter first number:  ");
+            String n1 = readLine("Enter first number: ");
             String n2 = readLine("Enter second number: ");
-            println(n1 + " + " + n2 + " = " + addNumericStrings(n1, n2));
-            println();
+            //check for numbers
+            if(n1.matches("[\\d]+") && n2.matches("[\\d]+")) {
+                //print the result
+                println(n1 + " + " + n2 + " = " + addNumericStrings(n1, n2));
+            }else {
+                println("Enter the numbers ");
+            }
         }
     }
 
@@ -25,21 +27,18 @@ public class Assignment5Part2 extends TextProgram {
      * @return A String representation of n1 + n2
      */
     private String addNumericStrings(String n1, String n2) {
-
         /* before continuing need to check that the length of n2 is greater*/
         if (n1.length() > n2.length()){
-            String t = n1;
+            String total = n1;
             n1 = n2;
-            n2 = t;
+            n2 = total;
         }
 
         // Take an empty String for storing result
-        String result = "";
-
+        StringBuilder result = new StringBuilder();
         // Calculate length of both String
         int value1 = n1.length(), value2 = n2.length();
         int diff = value2 - value1;
-
         // Initially take zero
         int remainder = 0;
 
@@ -47,9 +46,8 @@ public class Assignment5Part2 extends TextProgram {
         for (int i = value1 - 1; i>=0; i--)
         {
             // Compute sum of current digits
-            int sum = ((n1.charAt(i)-'0') +
-                    (n2.charAt(i+diff)-'0') + remainder);
-            result += (char)(sum % 10 + '0');
+            int sum = ((n1.charAt(i)-'0') + (n2.charAt(i+diff)-'0') + remainder);
+            result.append((char) (sum % 10 + '0'));
             remainder = sum / 10;
         }
 
@@ -57,15 +55,14 @@ public class Assignment5Part2 extends TextProgram {
         for (int i = value2 - value1 - 1; i >= 0; i--)
         {
             int sum = ((n2.charAt(i) - '0') + remainder);
-            result += (char)(sum % 10 + '0');
+            result.append((char) (sum % 10 + '0'));
             remainder = sum / 10;
         }
-
         // Add remaining
         if (remainder > 0)
-            result += (char)(remainder + '0');
-
+            result.append((char) (remainder + '0'));
         // reverse resultant String
-        return new StringBuilder(result).reverse().toString();
+        return new StringBuilder(result.toString()).reverse().toString();
     }
+
 }
