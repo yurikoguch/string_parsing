@@ -1,62 +1,67 @@
 package com.shpp.p2p.cs.ykohuch.assignment5;
 import com.shpp.cs.a.console.TextProgram;
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 
-
+/**this program structures the csv file by splitting its contents into columns that were previously
+        separated by commas and outputs these columns according to the index entered by the user*/
 public class Assignment5Part4 extends TextProgram {
     //File Path of the file with columns
     private final static String FILE = "src\\com\\shpp\\p2p\\cs\\ykohuch\\assignment5\\filename.csv";
-    //Inde of column you want to get
-    private final static Integer COLUMN = 0;
+    /*column index to be output*/
+    private final  static int columnIndex = 0;
 
-    public void run(){
-        extractColumn(FILE, COLUMN);
+    public void run() {
+        extractColumn(FILE, columnIndex);
     }
 
-    //Reads the file
-    private List<String> fieldsIn(String filepath) {
+    /* method that takes a string from the file and returns
+     an ArrayList <String> containing all the fields in the string*/
+    private ArrayList<String> fieldsIn(String filename) {
         List<String> strings = new ArrayList<>();
-        try (Scanner scanner = new Scanner(new FileReader(filepath))) {
-            while (scanner.hasNextLine()) {
-                strings.add(scanner.nextLine());
+        String line;
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            while ((line = br.readLine()) != null) {
+              strings.add(line);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return strings;
+        return (ArrayList<String>)strings;
     }
 
-    //Extrats the column by index from file
+    /*Method which opens a CSV file named filename, finds the column and assigns it an index (0 for the first column,
+     *1 for the second, and so on), then returns an ArrayList containing the information from that column*/
     private ArrayList<String> extractColumn(String filename, int columnIndex) {
-        List<List<String>> fileData = getColumns(fieldsIn(filename));
+        List<List<String>> fileData = getOutput(fieldsIn(filename));
         ArrayList<String> result = new ArrayList<>();
         for (List<String> list : fileData) {
             result.add(list.get(columnIndex));
         }
+        if(filename==null) return null;
         return result;
     }
 
-      /* Splits the list values.*/
-    private List<List<String>> getColumns(List<String> listToClean) {
+      /* Method which splits the list values
+       delete commas and print result*/
+    private List<List<String>> getOutput(List<String> output) {
         List<List<String>> strings = new ArrayList<>();
-        for (String line : listToClean) {
-            if (!line.contains("\"")) {
-                String a = line.replace(",", "\n");
-                println(a);
+        if(columnIndex<2) {
+        for (String line : output) {
+            String[] country = line.split(",");
+            if(line.contains("\"")){
+                country = line.split("\"");
             }
-            else if(line.contains("\"")){
-                String  b = line.replace("\"", " ");
-                b.split(",");
-                println(b);
+                System.out.println(country[columnIndex].replace(",", ""));
             }
+        }else {
+            System.out.println("no column available");
         }
         return strings;
     }
-
 }
 

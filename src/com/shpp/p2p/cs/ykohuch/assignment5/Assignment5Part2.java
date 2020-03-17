@@ -8,7 +8,7 @@ public class Assignment5Part2 extends TextProgram {
         while (true) {
             String n1 = readLine("Enter first number: ");
             String n2 = readLine("Enter second number: ");
-            //check for numbers
+             /*here uses a regular expression to check whether a user entered a numbers*/
             if(n1.matches("[\\d]+") && n2.matches("[\\d]+")) {
                 //print the result
                 println(n1 + " + " + n2 + " = " + addNumericStrings(n1, n2));
@@ -27,42 +27,40 @@ public class Assignment5Part2 extends TextProgram {
      * @return A String representation of n1 + n2
      */
     private String addNumericStrings(String n1, String n2) {
-        /* before continuing need to check that the length of n2 is greater*/
+        /* before continuing need to check that the length of n2 is greater
+        * if first string is longer we make it basic */
         if (n1.length() > n2.length()){
-            String total = n1;
+            String basic = n1;
             n1 = n2;
-            n2 = total;
+            n2 = basic;
         }
 
         // Take an empty String for storing result
         StringBuilder result = new StringBuilder();
-        // Calculate length of both String
-        int value1 = n1.length(), value2 = n2.length();
+        //  initialize variables that store the length of strings
+        int value1 = n1.length();
+        int value2 = n2.length();
+        //subtract the length of the longer string from the length of the shorter one
         int diff = value2 - value1;
-        // Initially take zero
+        // Initially zero for the rest
         int remainder = 0;
 
         // Traverse from end of both Strings
-        for (int i = value1 - 1; i>=0; i--)
+        for (int i = value1 -1 ; i>=0; i--)
         {
             // Compute sum of current digits
             int sum = ((n1.charAt(i)-'0') + (n2.charAt(i+diff)-'0') + remainder);
             result.append((char) (sum % 10 + '0'));
             remainder = sum / 10;
         }
-
-        // Add remaining digits of n2[]
+        // add the remainder to the string n2
         for (int i = value2 - value1 - 1; i >= 0; i--)
         {
             int sum = ((n2.charAt(i) - '0') + remainder);
             result.append((char) (sum % 10 + '0'));
             remainder = sum / 10;
         }
-        // Add remaining
-        if (remainder > 0)
-            result.append((char) (remainder + '0'));
         // reverse resultant String
         return new StringBuilder(result.toString()).reverse().toString();
     }
-
 }
